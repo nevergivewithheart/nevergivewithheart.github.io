@@ -1,54 +1,442 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>我的个人博客</title>
-    <!-- 这里可以链接到外部CSS文件 -->
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的心意 | 特别为你</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #ff758c, #ff7eb3, #a7c5ff, #6a8eff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .heart-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            color: #ff6b8b;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatUp 5s linear infinite;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(20deg);
+                opacity: 0;
+            }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            color: #ff4d7e;
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .name-input {
+            margin: 25px 0;
+        }
+        
+        .name-input label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .name-input input {
+            width: 80%;
+            max-width: 300px;
+            padding: 12px 20px;
+            border: 2px solid #ffb8c9;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .name-input input:focus {
+            outline: none;
+            border-color: #ff6b8b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.2);
+        }
+        
+        .message {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(255, 235, 240, 0.7);
+            border-radius: 15px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .heart-btn {
+            background-color: #ff6b8b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 20px 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.4);
+        }
+        
+        .heart-btn:hover {
+            background-color: #ff4d7e;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 139, 0.6);
+        }
+        
+        .heart-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .heart-btn i {
+            margin-right: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .final-message {
+            animation: fadeIn 1.5s;
+            padding: 30px;
+        }
+        
+        .final-message h2 {
+            color: #ff4d7e;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .final-message p {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .final-heart {
+            font-size: 4rem;
+            color: #ff6b8b;
+            animation: heartbeat 1.5s infinite;
+            margin: 20px 0;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.2); }
+            10% { transform: scale(1.1); }
+            15% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .signature {
+            margin-top: 30px;
+            font-style: italic;
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<header>
-    <h1>欢迎来到我的博客</h1>
-    <nav>
-        <ul>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">关于我</a></li>
-            <li><a href="#">文章列表</a></li>
-            <li><a href="#">联系方式</a></li>
-        </ul>
-    </nav>
-</header>
-
-<main>
-    <section class="articles">
-        <article>
-            <h2><a href="#">文章标题1</a></h2>
-            <p>发表于：2023-04-01</p>
-            <p>简介：这是文章1的简短介绍...</p>
-        </article>
+    <div class="container">
+        <div class="heart-container" id="heartContainer"></div>
         
-        <article>
-            <h2><a href="#">文章标题2</a></h2>
-            <p>发表于：2023-04-05</p>
-            <p>简介：这是文章2的简短介绍...</p>
-        </article>
+        <div class="content" id="mainContent">
+            <h1><i class="fas fa-heart"></i> 我的心意 <i class="fas fa-heart"></i></h1>
+            
+            <div class="name-input">
+                <label for="userName">请先输入你的名字：</label>
+                <input type="text" id="userName" placeholder="你的名字">
+            </div>
+            
+            <div class="message" id="loveMessage">
+                在这里，我想用我全部的心意，对你说出那句最重要的话...
+            </div>
+            
+            <div>
+                <button class="heart-btn" id="revealBtn">
+                    <i class="fas fa-heart"></i> 点击查看我的心意
+                </button>
+                <button class="heart-btn" id="surpriseBtn">
+                    <i class="fas fa-magic"></i> 惊喜效果
+                </button>
+            </div>
+            
+            <p class="signature">用代码编写的心意，只为你 ❤️</p>
+        </div>
         
-        <!-- 更多文章条目... -->
-    </section>
+        <div class="final-message hidden" id="finalMessage">
+            <h2 id="greeting"></h2>
+            <div class="final-heart">
+                <i class="fas fa-heart"></i>
+            </div>
+            <p id="personalMessage"></p>
+            <p>从遇见你的那一刻起，我的世界就充满了色彩。<br>你的笑容是我每天的动力，你的存在让我的生活变得完整。</p>
+            <p>我想和你一起，编写属于我们的未来。</p>
+            <button class="heart-btn" id="resetBtn">
+                <i class="fas fa-redo"></i> 再看一次
+            </button>
+        </div>
+    </div>
 
-    <aside class="sidebar">
-        <h3>最新文章</h3>
-        <ul>
-            <li><a href="#">最新的文章标题</a></li>
-            <!-- 其他最新文章链接... -->
-        </ul>
-    </aside>
-</main>
-
-<footer>
-    <p>&copy; 2023 我的博客. All rights reserved.</p>
-</footer>
-
+    <script>
+        // 创建漂浮的心形
+        function createHearts(count) {
+            const container = document.getElementById('heartContainer');
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // 随机位置
+                const leftPos = Math.random() * 100;
+                heart.style.left = leftPos + '%';
+                
+                // 随机动画延迟和持续时间
+                const delay = Math.random() * 5;
+                const duration = 3 + Math.random() * 4;
+                heart.style.animationDelay = delay + 's';
+                heart.style.animationDuration = duration + 's';
+                
+                // 随机大小
+                const size = 15 + Math.random() * 25;
+                heart.style.fontSize = size + 'px';
+                
+                container.appendChild(heart);
+            }
+        }
+        
+        // 创建初始心形
+        createHearts(15);
+        
+        // 获取DOM元素
+        const userNameInput = document.getElementById('userName');
+        const revealBtn = document.getElementById('revealBtn');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const mainContent = document.getElementById('mainContent');
+        const finalMessage = document.getElementById('finalMessage');
+        const greeting = document.getElementById('greeting');
+        const personalMessage = document.getElementById('personalMessage');
+        const loveMessage = document.getElementById('loveMessage');
+        
+        // 表白的消息数组
+        const messages = [
+            "在万千行代码中，我找到了最完美的算法——爱你。",
+            "你是我生命中最美丽的bug，让我永远不想修复。",
+            "如果爱是编程语言，那你就是我唯一的语法。",
+            "我的世界原本是黑白，直到你出现，渲染了所有色彩。",
+            "你就像我最喜欢的代码，每次看到都会心跳加速。"
+        ];
+        
+        // 随机选择一条消息
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        loveMessage.textContent = randomMessage;
+        
+        // 显示表白
+        revealBtn.addEventListener('click', function() {
+            const userName = userNameInput.value.trim() || "你";
+            
+            if (userNameInput.value.trim() === "") {
+                userNameInput.style.borderColor = "#ff4d7e";
+                userNameInput.placeholder = "请输入你的名字哦~";
+                return;
+            }
+            
+            // 更新问候语
+            greeting.textContent = `亲爱的${userName}，`;
+            personalMessage.textContent = randomMessage;
+            
+            // 切换显示
+            mainContent.classList.add('hidden');
+            finalMessage.classList.remove('hidden');
+            
+            // 创建更多心形
+            createHearts(30);
+        });
+        
+        // 惊喜效果
+        surpriseBtn.addEventListener('click', function() {
+            const userName = userNameInput.value.trim() || "你";
+            
+            if (userNameInput.value.trim() === "") {
+                userNameInput.style.borderColor = "#ff4d7e";
+                userNameInput.placeholder = "请输入你的名字哦~";
+                return;
+            }
+            
+            // 添加爆炸效果的心形
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    
+                    // 从按钮位置开始
+                    const rect = surpriseBtn.getBoundingClientRect();
+                    heart.style.left = (rect.left + rect.width/2) + 'px';
+                    heart.style.top = (rect.top + rect.height/2) + 'px';
+                    heart.style.position = 'fixed';
+                    
+                    // 随机方向
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 100 + Math.random() * 200;
+                    const endX = rect.left + rect.width/2 + Math.cos(angle) * distance;
+                    const endY = rect.top + rect.height/2 + Math.sin(angle) * distance;
+                    
+                    document.body.appendChild(heart);
+                    
+                    // 爆炸动画
+                    heart.animate([
+                        { 
+                            transform: 'translate(0, 0) scale(1)', 
+                            opacity: 1 
+                        },
+                        { 
+                            transform: `translate(${endX - (rect.left + rect.width/2)}px, ${endY - (rect.top + rect.height/2)}px) scale(0.5)`, 
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: 1000 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                    });
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 2000);
+                }, i * 30);
+            }
+            
+            // 显示表白
+            setTimeout(() => {
+                revealBtn.click();
+            }, 1500);
+        });
+        
+        // 重置按钮
+        resetBtn.addEventListener('click', function() {
+            mainContent.classList.remove('hidden');
+            finalMessage.classList.add('hidden');
+            userNameInput.value = "";
+            userNameInput.style.borderColor = "#ffb8c9";
+            userNameInput.placeholder = "你的名字";
+            
+            // 创建更多心形
+            createHearts(20);
+        });
+        
+        // 输入框回车事件
+        userNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                revealBtn.click();
+            }
+        });
+        
+        // 随机更改背景渐变
+        function changeBackground() {
+            const colors = [
+                "#ff758c, #ff7eb3, #a7c5ff, #6a8eff",
+                "#f093fb, #f5576c, #4facfe, #00f2fe",
+                "#fa709a, #fee140, #96fbc4, #f9d976",
+                "#a8edea, #fed6e3, #9890e3, #b5eaee"
+            ];
+            
+            const randomColors = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = `linear-gradient(-45deg, ${randomColors})`;
+        }
+        
+        // 每30秒更换一次背景
+        setInterval(changeBackground, 30000);
+    </script>
 </body>
 </html>
